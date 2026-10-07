@@ -90,7 +90,7 @@ class NetService : Service() {
         return NotificationCompat.Builder(this, channelId)
             .setContentTitle("Sync")
             .setContentText("running")
-            .setSmallIcon(android.R.drawable.stat_notify_sync)
+            .setSmallIcon(R.drawable.ic_rose)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setOngoing(true)
             .build()
