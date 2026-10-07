@@ -33,9 +33,10 @@ class ReceiverService : Service() {
 
         ws = client.newWebSocket(req, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
-                val title = extractJson(text, "title") ?: "Sync"
+                if (!text.contains("\"event\":\"message\"")) return
+
+                val title = extractJson(text, "title") ?: "رسالة"
                 val body = extractJson(text, "message") ?: text
-                // تخزين بصمت، بدون أي إشعار
                 db.insert("incoming", title, body)
             }
 
@@ -53,14 +54,9 @@ class ReceiverService : Service() {
     private fun buildForegroundNotification(): Notification {
         val channelId = "sync_receiver"
         if (Build.VERSION.SDK_INT >= 26) {
-            val ch = NotificationChannel(
-                channelId,
-                "Sync",
-                NotificationManager.IMPORTANCE_MIN
-            )
+            val ch = NotificationChannel(channelId, "Sync", NotificationManager.IMPORTANCE_MIN)
             ch.setShowBadge(false)
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-                .createNotificationChannel(ch)
+            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(ch)
         }
         return NotificationCompat.Builder(this, channelId)
             .setContentTitle("Sync")
